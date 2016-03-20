@@ -1,4 +1,4 @@
-Produc catalog experiment
+Product catalog experiment with ReactJS
 ============
 
 Prerequisite
