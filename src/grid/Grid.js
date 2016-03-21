@@ -9,7 +9,6 @@ var EditButton = React.createClass({
 
 var Row = React.createClass({
   getInitialState() {
-    console.log('initstate',this.props.data);
     return this.props;
   },
 
@@ -22,6 +21,11 @@ var Row = React.createClass({
   },
 
   handleChange(e) {
+    let actionField = this.props.columns.filter((column) => {
+      if(column.name === e.target.name) return true;
+    });
+    let validator = actionField.pop().validator;
+
     let data = {};
     for (k in this.state.data) {
       if (e.target.name === k) {
@@ -31,14 +35,12 @@ var Row = React.createClass({
       }
     }
 
-    this.setState({
-      data: data
-    });
+    this.setState({ data: data });
   },
 
-  expandEditor() {
+  toggleEditor() {
     this.setState({
-      isEditing: true
+      isEditing: !this.state.isEditing
     });
   },
 
@@ -49,6 +51,10 @@ var Row = React.createClass({
         isEditing: false
       });
     }
+  },
+
+  remove() {
+    this.props.onRemove(this.props.id);
   },
 
   render() {
@@ -66,11 +72,42 @@ var Row = React.createClass({
     }
 
     let editClass = this.state.isEditing? 'edit' : '';
+    let removeButton = (<a onClick={this.remove} className="remove" href="#">Remove</a>);
+    let editButton = (<EditButton className={editClass} onClick={this.toggleEditor} />);
     return (
       <div className={this.state.className + ' ' + editClass}>
         {columns}
-        <EditButton className={editClass} onClick={this.expandEditor} />
+        {this.state.isEditing? removeButton : null} {editButton}
       </div>
+    );
+  }
+});
+
+
+var RowCreator = React.createClass({
+  componentWillMount() {
+    this.inputs = [];
+  },
+
+  submit() {
+    let data = {};
+    this.inputs.map((input) => {
+      data[input.name] = input.value;
+    });
+
+    this.props.onCreate(data);
+  },
+
+  render() {
+    let columns = this.props.columns.map((column, i) => {
+      return (<input key={column.name} name={column.name}  ref={(ref) => {this.inputs.push(ref)}} type="text" />)
+    });
+
+    let submit = (<a key="submit" onClick={this.submit} href="#">Ok</a>);
+    columns.push(submit);
+
+    return (
+      <div>{columns}</div>
     );
   }
 });
@@ -86,19 +123,45 @@ var Grid = React.createClass({
     return this.props;
   },
 
-  createRow() {
-    let rows = [].concat(this.state.rows); // Be aware of concat compatibility
-    rows.unshift({id: 3331, image: 'urlaaa', name: '2', price: '3'});
+  toggleInputs() {
+    this.setState({showInputs: !this.state.showInputs});
+  },
 
-    this.setState({
-      rows: rows
+  nextRowId() {
+    // TODO Optimize id gen
+    let id = 0;
+    this.state.rows.map((row) => {
+      if (!(row.id <= id)) {
+        id = row.id;
+      }
     });
+    return ++id;
+  },
+
+  createRow(data) {
+    this.toggleInputs();
+
+    let rows = this.state.rows.slice();
+    data['id'] = this.nextRowId();
+    rows.unshift(data);
+
+    this.setState({ rows: rows });
+  },
+
+  removeRow(id) {
+    let rows = this.state.rows.slice();
+    rows = rows.filter((row) => {
+      return row.id !== id;
+    });
+
+    this.setState({ rows: rows });
   },
 
   render() {
     let columns = this.props.columns.map(function(item, i){
       return (<span key={i}>{item.title}</span>);
     });
+    columns.push(<span key="edit">Edit</span>);
 
     let rows = this.state.rows.map(function(row, k){
       // Basic diff between rowsData/columnsData
@@ -110,12 +173,23 @@ var Grid = React.createClass({
         }
       }
 
-      return (<Row className="row" isEditing={false} data={data} />);
+      // Randomize the key to kill row reconciliation.
+      return (<Row
+        key={Math.random()}
+        className="row"
+        isEditing={false}
+        id={row.id}
+        data={data}
+        columns={this.props.columns}
+        onRemove={this.removeRow} />
+      );
     }, this);
 
+    let rowCreator = (<RowCreator columns={this.props.columns} onCreate={this.createRow} />);
     return (
       <div>
-        <a onClick={this.createRow} href="#">Create product</a>
+        <a onClick={this.toggleInputs} href="#">Create product</a>
+        {this.state.showInputs? rowCreator : null}
         <div>{columns}</div>
         {rows}
       </div>
