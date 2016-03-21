@@ -117,21 +117,7 @@ var Grid = React.createClass({
       <div>
         <a onClick={this.createRow} href="#">Create product</a>
         <div>{columns}</div>
-        {
-          this.state.rows.map(function(row, k){
-            // Basic diff between rowsData/columnsData
-            let data = {};
-            for (let i=0; i<this.props.columns.length; i++) {
-              let val = row[this.props.columns[i].name];
-              if (val !== undefined) {
-                data[this.props.columns[i].name] = val;
-              }
-            }
-
-            console.log(k);
-            return (<Row className="row" key={k} isEditing={false} data={data} />);
-          }, this)
-        }
+        {rows}
       </div>
     );
   }
