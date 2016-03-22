@@ -86,21 +86,45 @@ var Row = React.createClass({
 
 var RowCreator = React.createClass({
   componentWillMount() {
-    this.inputs = [];
+    this.inputs = {};
+    this.errors = [];
+    this.validators = {};
+
+    this.props.columns.forEach((column) => {
+      this.validators[column.name] = column.validator;
+    });
   },
 
   submit() {
     let data = {};
-    this.inputs.map((input) => {
-      data[input.name] = input.value;
+    Object.keys(this.inputs).forEach((key) => {
+      let input = this.inputs[key];
+      let validator = this.validators[input.name];
+      let result = validator(input.value);
+
+      if (result) {
+        data[input.name] = input.value;
+      } else {
+        let o = {};
+        o[input.name] = true;
+        this.errors.push(o);
+      }
     });
 
-    this.props.onCreate(data);
+    if (this.errors.length > 0) {
+      this.setState({
+        errors: this.errors
+      }, () => { this.errors = []; });
+    } else {
+      this.props.onCreate(data);
+    }
   },
 
   render() {
-    let columns = this.props.columns.map((column, i) => {
-      return (<input key={column.name} name={column.name}  ref={(ref) => {this.inputs.push(ref)}} type="text" />)
+    let columns = this.props.columns.map((column) => {
+      return (<input key={column.name} name={column.name} ref={(ref) => {
+        this.inputs[column.name] = ref;
+      }} type="text" />)
     });
 
     let submit = (<a key="submit" onClick={this.submit} href="#">Ok</a>);

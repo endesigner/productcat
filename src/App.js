@@ -6,7 +6,6 @@ var App = React.createClass({
     let columns = [
       {name: 'image', title: 'Image',
         validator: () => {
-          console.log('validate');
           return true;
         }
       },
