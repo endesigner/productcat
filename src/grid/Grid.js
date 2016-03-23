@@ -1,140 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var EditButton = React.createClass({
-  render() {
-    return (<a {...this.props} href="#">Edit</a>);
-  }
-});
-
-var Row = React.createClass({
-  getInitialState() {
-    return this.props;
-  },
-
-  componentDidMount() {
-    document.addEventListener('click', this.collapseEditor, true);
-  },
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.collapseEditor, true);
-  },
-
-  handleChange(e) {
-    let actionField = this.props.columns.filter((column) => {
-      if(column.name === e.target.name) return true;
-    });
-    let validator = actionField.pop().validator;
-
-    let data = {};
-    for (k in this.state.data) {
-      if (e.target.name === k) {
-        data[k] = e.target.value;
-      } else {
-        data[k] = this.state.data[k]
-      }
-    }
-
-    this.setState({ data: data });
-  },
-
-  toggleEditor() {
-    this.setState({
-      isEditing: !this.state.isEditing
-    });
-  },
-
-  collapseEditor(e) {
-    const domNode = ReactDOM.findDOMNode(this);
-    if (!domNode || !domNode.contains(e.target)) {
-      this.setState({
-        isEditing: false
-      });
-    }
-  },
-
-  remove() {
-    this.props.onRemove(this.props.id);
-  },
-
-  render() {
-    let columns = [],
-      data = this.state.data,
-      col;
-
-    for (let k in data) {
-      if (this.state.isEditing) {
-         col = (<input name={k} key={k} type="text" value={data[k]} onChange={this.handleChange} />);
-      } else {
-         col = data[k];
-      }
-      columns.push(col);
-    }
-
-    let editClass = this.state.isEditing? 'edit' : '';
-    let removeButton = (<a onClick={this.remove} className="remove" href="#">Remove</a>);
-    let editButton = (<EditButton className={editClass} onClick={this.toggleEditor} />);
-    return (
-      <div className={this.state.className + ' ' + editClass}>
-        {columns}
-        {this.state.isEditing? removeButton : null} {editButton}
-      </div>
-    );
-  }
-});
-
-
-var RowCreator = React.createClass({
-  componentWillMount() {
-    this.inputs = {};
-    this.errors = [];
-    this.validators = {};
-
-    this.props.columns.forEach((column) => {
-      this.validators[column.name] = column.validator;
-    });
-  },
-
-  submit() {
-    let data = {};
-    Object.keys(this.inputs).forEach((key) => {
-      let input = this.inputs[key];
-      let validator = this.validators[input.name];
-      let result = validator(input.value);
-
-      if (result) {
-        data[input.name] = input.value;
-      } else {
-        let o = {};
-        o[input.name] = true;
-        this.errors.push(o);
-      }
-    });
-
-    if (this.errors.length > 0) {
-      this.setState({
-        errors: this.errors
-      }, () => { this.errors = []; });
-    } else {
-      this.props.onCreate(data);
-    }
-  },
-
-  render() {
-    let columns = this.props.columns.map((column) => {
-      return (<input key={column.name} name={column.name} ref={(ref) => {
-        this.inputs[column.name] = ref;
-      }} type="text" />)
-    });
-
-    let submit = (<a key="submit" onClick={this.submit} href="#">Ok</a>);
-    columns.push(submit);
-
-    return (
-      <div>{columns}</div>
-    );
-  }
-});
+var Row = require('../row');
+var RowCreator = require('../row-creator');
 
 var Grid = React.createClass({
   getDefaultProps() {
@@ -144,7 +12,9 @@ var Grid = React.createClass({
   },
 
   getInitialState() {
-    return this.props;
+    let state = { filterText: '' };
+    state = Object.assign(state, this.props);
+    return state;
   },
 
   toggleInputs() {
@@ -167,7 +37,7 @@ var Grid = React.createClass({
 
     let rows = this.state.rows.slice();
     data['id'] = this.nextRowId();
-    rows.unshift(data);
+    rows.push(data);
 
     this.setState({ rows: rows });
   },
@@ -179,6 +49,21 @@ var Grid = React.createClass({
     });
 
     this.setState({ rows: rows });
+  },
+
+  updateRow(data) {
+    let rows = this.state.rows.map((row) => {
+      if (row.id === data.id) {
+        return data;
+      } else {
+        return row;
+      }
+    });
+    this.setState({ rows: rows });
+  },
+
+  filter(e) {
+    this.setState({ filterText: e.target.value });
   },
 
   render() {
@@ -197,21 +82,28 @@ var Grid = React.createClass({
         }
       }
 
-      // Randomize the key to kill row reconciliation.
+      let filter = this.state.filterText.trim().toLowerCase();
+      if (row.name.indexOf(filter) === -1) {
+        return;
+      }
+
       return (<Row
-        key={Math.random()}
+        key={k}
         className="row"
         isEditing={false}
         id={row.id}
         data={data}
         columns={this.props.columns}
-        onRemove={this.removeRow} />
+        onRemove={this.removeRow}
+        onUpdate={this.updateRow}
+        />
       );
     }, this);
 
     let rowCreator = (<RowCreator columns={this.props.columns} onCreate={this.createRow} />);
     return (
       <div>
+        <input type="text" onChange={this.filter} />
         <a onClick={this.toggleInputs} href="#">Create product</a>
         {this.state.showInputs? rowCreator : null}
         <div>{columns}</div>
