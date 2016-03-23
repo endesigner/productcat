@@ -27,6 +27,12 @@ var Row = React.createClass({
     document.removeEventListener('click', this.collapseEditor, true);
   },
 
+  handleKeyDown(e) {
+    if(e.keyCode === 13 && this.isValid()) {
+      this.toggleEditor()
+    }
+  },
+
   handleChange(e) {
     let validator = this.validators[e.target.name];
 
@@ -88,9 +94,13 @@ var Row = React.createClass({
 
     for (let k in data) {
       if (this.state.isEditing) {
-        col = (<span><input name={k} key={k} type="text" value={data[k]} onChange={this.handleChange} /></span>);
+        col = (
+          <span>
+            <input name={k} key={k} type="text" value={data[k]} onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
+          </span>
+        );
       } else {
-        col = /^(http|https)/.test(data[k])? <span><img key={k} src={data[k]} /></span> : data[k]
+        col = /\.(jpg|jpeg|png)$/.test(data[k])? <span><img key={k} src={data[k]} /></span> : data[k];
       }
       columns.push(col);
     }

@@ -36,8 +36,8 @@ var App = React.createClass({
   render() {
     let columns = [
       {name: 'image', title: 'Image',
-        validator: () => {
-          return true;
+        validator: (v) => {
+          return /\.(jpg|jpeg|png)$/.test(v)
         }
       },
       {name: 'name',  title: 'Product Name',

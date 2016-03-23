@@ -11,6 +11,12 @@ var RowCreator = React.createClass({
     });
   },
 
+  handleKeyDown(e) {
+    if(e.keyCode === 13) {
+      this.submit();
+    }
+  },
+
   submit() {
     let data = {};
     Object.keys(this.inputs).forEach((key) => {
@@ -38,7 +44,7 @@ var RowCreator = React.createClass({
 
   render() {
     let columns = this.props.columns.map((column) => {
-      return (<input key={column.name} name={column.name} ref={(ref) => {
+      return (<input onBlur={this.handleBlur} onKeyDown={this.handleKeyDown} key={column.name} name={column.name} ref={(ref) => {
         this.inputs[column.name] = ref;
       }} type="text" />)
     });

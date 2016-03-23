@@ -9,12 +9,13 @@ module.exports = {
   entry: {
     app: PATHS.src
   },
-  devtool: 'eval',
 
   output: {
     path: PATHS.dist,
     filename: "dist.js"
   },
+
+  devtool: 'eval',
 
   module: {
     loaders: [
