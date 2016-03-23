@@ -1,0 +1,13 @@
+.grid {
+  > .header {
+    padding: 5px;
+
+    > span {
+      display: inline-block;
+      width: 20%;
+    }
+  }
+
+  background: #ccc;
+
+}

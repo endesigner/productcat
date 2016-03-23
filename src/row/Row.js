@@ -1,5 +1,9 @@
+require('!style!css!sass!./Row.scss');
+
 var React = require('react');
+var ReactDOM = require('react-dom');
 var EditButton = require('../edit-button');
+//var RemoveButton = require('../remove-button');
 
 var Row = React.createClass({
   componentWillMount() {
@@ -84,9 +88,9 @@ var Row = React.createClass({
 
     for (let k in data) {
       if (this.state.isEditing) {
-         col = (<input name={k} key={k} type="text" value={data[k]} onChange={this.handleChange} />);
+        col = (<span><input name={k} key={k} type="text" value={data[k]} onChange={this.handleChange} /></span>);
       } else {
-         col = data[k];
+        col = /^(http|https)/.test(data[k])? <span><img key={k} src={data[k]} /></span> : data[k]
       }
       columns.push(col);
     }
@@ -97,7 +101,8 @@ var Row = React.createClass({
     return (
       <div className={this.state.className + ' ' + editClass}>
         {columns}
-        {this.state.isEditing? removeButton : null} {editButton}
+        {this.state.isEditing? removeButton : null}
+        {editButton}
       </div>
     );
   }

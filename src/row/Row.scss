@@ -1,0 +1,20 @@
+.row {
+  background: #eee;
+  padding: 5px;
+
+  > span {
+    display: inline-block;
+    width: 20%;
+
+    > img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+
+      box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+      -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+      -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    }
+  }
+
+}

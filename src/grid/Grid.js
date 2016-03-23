@@ -1,3 +1,5 @@
+require('!style!css!sass!./Grid.scss');
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -66,6 +68,10 @@ var Grid = React.createClass({
     this.setState({ filterText: e.target.value });
   },
 
+  componentWillUpdate(_, nextState) {
+    this.props.store(nextState.rows);
+  },
+
   render() {
     let columns = this.props.columns.map(function(item, i){
       return (<span key={i}>{item.title}</span>);
@@ -102,11 +108,11 @@ var Grid = React.createClass({
 
     let rowCreator = (<RowCreator columns={this.props.columns} onCreate={this.createRow} />);
     return (
-      <div>
+      <div className={this.props.className}>
         <input type="text" onChange={this.filter} />
         <a onClick={this.toggleInputs} href="#">Create product</a>
         {this.state.showInputs? rowCreator : null}
-        <div>{columns}</div>
+        <div className="header">{columns}</div>
         {rows}
       </div>
     );
