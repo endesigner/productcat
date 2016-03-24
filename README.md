@@ -12,6 +12,6 @@ Installation
 npm install
 npm start
 ```
-Point your browser to ```localhost:8080```
+Point your browser to ```localhost:1337```
 
 

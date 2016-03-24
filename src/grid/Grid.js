@@ -90,7 +90,7 @@ var Grid = React.createClass({
       }
 
       let filter = this.state.filterText.trim().toLowerCase();
-      if (row.name.indexOf(filter) === -1) {
+      if (row.name.trim().toLowerCase().indexOf(filter) === -1) {
         return;
       }
 
