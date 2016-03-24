@@ -5,6 +5,7 @@ var ReactDOM = require('react-dom');
 
 var Row = require('../row');
 var RowCreator = require('../row-creator');
+var Button = require('../button');
 
 var Grid = React.createClass({
   getDefaultProps() {
@@ -76,7 +77,7 @@ var Grid = React.createClass({
     let columns = this.props.columns.map(function(item, i){
       return (<span key={i}>{item.title}</span>);
     });
-    columns.push(<span key="edit">Edit</span>);
+    columns.push(<span key="edit" className="edit">Edit</span>);
 
     let rows = this.state.rows.map(function(row, k){
       // Basic diff between rowsData/columnsData
@@ -106,14 +107,19 @@ var Grid = React.createClass({
       );
     }, this);
 
-    let rowCreator = (<RowCreator columns={this.props.columns} onCreate={this.createRow} />);
+    let rowCreator = (<RowCreator className="row-creator" columns={this.props.columns} onCreate={this.createRow} />);
     return (
       <div className={this.props.className}>
-        <input type="text" onChange={this.filter} />
-        <a onClick={this.toggleInputs} href="#">Create product</a>
-        {this.state.showInputs? rowCreator : null}
-        <div className="header">{columns}</div>
-        {rows}
+        <div className="controls">
+          <div className="name">Product library</div>
+          <div className="filter"><input type="text" placeholder="Type to filter rows by name..." onChange={this.filter} /></div>
+          <Button className="create" onClick={this.toggleInputs}>Create product</Button>
+        </div>
+        <div className="content">
+          <div className="header">{columns}</div>
+          {this.state.showInputs? rowCreator : null}
+          {rows}
+        </div>
       </div>
     );
   }

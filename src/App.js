@@ -8,9 +8,11 @@ var App = React.createClass({
     // Default rows
     return {
       rows: [
-        {id: 4, image: 'https://pbs.twimg.com/profile_images/562466745340817408/_nIu8KHX.jpeg', name: '2', price: '3'},
-        {id: 1, image: 'two', name: '5', price: '6'},
-        {id: 3, image: 'three', name: '5', price: '6'}
+        {id: 1, image: 'assets/chocolate.png', name: 'Chocolate cupkake', price: '7,90'},
+        {id: 2, image: 'assets/strawberry.png', name: 'Strawberry cupkake', price: '13,90'},
+        {id: 3, image: 'assets/raspberry.png', name: 'Raspberry cupkake', price: '5.50'},
+        {id: 3, image: 'assets/healthy.png', name: 'Healthy cupkake', price: '5.50'},
+        {id: 4, image: 'assets/kitten.jpeg', name: 'Kittie', price: '3'},
       ]
     };
   },
@@ -37,7 +39,8 @@ var App = React.createClass({
     let columns = [
       {name: 'image', title: 'Image',
         validator: (v) => {
-          return /\.(jpg|jpeg|png)$/.test(v)
+          return true;
+          //return /\.(jpg|jpeg|png)$/.test(v)
         }
       },
       {name: 'name',  title: 'Product Name',
@@ -47,7 +50,7 @@ var App = React.createClass({
       },
       {name: 'price', title: 'Price',
         validator: (v) => {
-          return (v > 0);
+          return (parseInt(v.replace(',','')) > 0);
         }
       },
     ];

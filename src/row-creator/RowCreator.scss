@@ -1,0 +1,59 @@
+$iconTick: '\F001';
+@mixin linearGradient($top, $bottom){
+  background: $top; /* Old browsers */
+  background: -moz-linear-gradient(top,  $top 0%, $bottom 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$top), color-stop(100%,$bottom)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  $top 0%,$bottom 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  $top 0%,$bottom 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  $top 0%,$bottom 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  $top 0%,$bottom 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+
+.row-creator {
+  padding: 5px;
+  padding: 20px;
+  font-weight: bold;
+
+  > span {
+    display: inline-block;
+    width: 25%;
+
+    > input {
+      padding: 5px;
+      height: 45px;
+      width: 100%;
+    }
+  }
+
+  > span.controls {
+    text-align: right;
+
+    a {
+      font-weight: normal;
+      line-height: 0;
+      font-size: 0;
+      text-decoration: none;
+      color: transparent;
+
+      &:before {
+        line-height: 46px;
+        font-family: Dingbatz;
+        color: #fff;
+        display: inline-block;
+        font-size: 30px;
+        content: $iconTick;
+        text-align: center;
+        border: 1px solid #0072ac;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        @include linearGradient(#1ba0e3, #0383c3);
+
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      }
+    }
+  }
+}

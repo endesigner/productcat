@@ -38,8 +38,10 @@ table {
   border-spacing: 0;
 }
 
-.loader {
-  font-size:120%;
-  font-family: Arial, Verdana;
-  padding: 5px;
+body {
+  background: #eceeef;
+  font-family: Zent;
+  padding: 50px;
 }
+
+@import 'fonts'

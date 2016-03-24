@@ -1,20 +1,107 @@
+$color-black: #000;
+$color-light: #eceeef;
+$color-white: #fff;
+
+$iconEdit: '\F070';
+$iconCross: '\F002';
+
+@mixin linearGradient($top, $bottom){
+    background: $top; /* Old browsers */
+    background: -moz-linear-gradient(top,  $top 0%, $bottom 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$top), color-stop(100%,$bottom)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $top 0%,$bottom 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $top 0%,$bottom 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $top 0%,$bottom 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  $top 0%,$bottom 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+
 .row {
-  background: #eee;
   padding: 5px;
+  border-top: 1px solid $color-light;
+  padding: 20px;
+  font-weight: bold;
+
 
   > span {
     display: inline-block;
-    width: 20%;
+    width: 25%;
+
+    > input {
+      padding: 5px;
+      height: 45px;
+      width: 100%;
+      font-size: 100%;
+      font-family: Zent;
+    }
 
     > img {
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
+      border: 2px solid $color-white;
       border-radius: 50%;
 
-      box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-      -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-      -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+      -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
     }
   }
+
+  > span.controls {
+    text-align: right;
+
+    a {
+      font-weight: normal;
+      line-height: 0;
+      font-size: 0;
+      text-decoration: none;
+      color: transparent;
+      position: relative;
+
+      &:before {
+        line-height: 46px;
+        font-family: Dingbatz;
+        color: $color-white;
+        display: inline-block;
+        font-size: 30px;
+        content: $iconEdit;
+        text-align: center;
+        border: 1px solid #0072ac;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        @include linearGradient(#1ba0e3, #0383c3);
+
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      }
+
+
+    }
+
+    a.remove {
+      margin: 0 5px 0 0;
+      &:before {
+        line-height: 46px;
+        font-family: Dingbatz;
+        color: $color-white;
+        display: inline-block;
+        font-size: 30px;
+        content: $iconCross;
+        text-align: center;
+        border: 1px solid #d23c31;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        @include linearGradient(#ffba98, #fe5b4f);
+
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      }
+    }
+  }
+
 
 }

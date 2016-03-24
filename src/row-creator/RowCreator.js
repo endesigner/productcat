@@ -1,4 +1,7 @@
+require('!style!css!sass!./RowCreator.scss');
+
 var React = require('react');
+var Button = require('../button');
 
 var RowCreator = React.createClass({
   componentWillMount() {
@@ -44,16 +47,16 @@ var RowCreator = React.createClass({
 
   render() {
     let columns = this.props.columns.map((column) => {
-      return (<input onBlur={this.handleBlur} onKeyDown={this.handleKeyDown} key={column.name} name={column.name} ref={(ref) => {
+      return (<span><input onKeyDown={this.handleKeyDown} key={column.name} name={column.name} ref={(ref) => {
         this.inputs[column.name] = ref;
-      }} type="text" />)
+      }} type="text" /></span>)
     });
 
-    let submit = (<a key="submit" onClick={this.submit} href="#">Ok</a>);
+    let submit = (<span className="controls"><Button key="submit" onClick={this.submit} href="#">Ok</Button></span>);
     columns.push(submit);
 
     return (
-      <div>{columns}</div>
+      <div className={this.props.className}>{columns}</div>
     );
   }
 });

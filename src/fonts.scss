@@ -1,0 +1,49 @@
+$dingbatz-version: "Dingbatz_v1016";
+$zent-version: "zent_v1045";
+
+$font-host: "https://izettle-assets.s3.amazonaws.com/core-fonts";
+
+@mixin setup-font($name, $location, $id) {
+	font-family: $name;
+	src: url('#{$font-host}/#{$location}.eot?v=2');
+	src: url('#{$font-host}/#{$location}.eot?v=2#iefix') format('embedded-opentype'),
+	     url('#{$font-host}/#{$location}.woff?v=2') format('woff'),
+	     url('#{$font-host}/#{$location}.ttf?v=2') format('truetype'),
+	     url('#{$font-host}/#{$location}.svg?v=2#@{id}') format('svg');
+}
+
+@font-face {
+	@include setup-font("Zent", "#{$zent-version}/zent-light", "zentlight");
+	font-weight: lighter;
+	font-style: normal;
+}
+
+@font-face {
+	@include setup-font("Zent", "#{$zent-version}/zent-regular", "zentregular");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	@include setup-font("Zent", "#{$zent-version}/zent-italic", "zentitalic");
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	@include setup-font("Zent", "#{$zent-version}/zent-bold", "zentbold");
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	@include setup-font("Dingbatz", "#{$dingbatz-version}/dingbatz-regular", "dingbatzregular");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	@include setup-font("Dingbatz", "#{$dingbatz-version}/dingbatz-bold", "dingbatzbold");
+	font-weight: bold;
+	font-style: normal;
+}

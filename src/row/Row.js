@@ -2,8 +2,7 @@ require('!style!css!sass!./Row.scss');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var EditButton = require('../edit-button');
-//var RemoveButton = require('../remove-button');
+var Button = require('../button');
 
 var Row = React.createClass({
   componentWillMount() {
@@ -95,24 +94,28 @@ var Row = React.createClass({
     for (let k in data) {
       if (this.state.isEditing) {
         col = (
-          <span>
-            <input name={k} key={k} type="text" value={data[k]} onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
+          <span key={k}>
+            <input name={k} type="text" value={data[k]} onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
           </span>
         );
       } else {
-        col = /\.(jpg|jpeg|png)$/.test(data[k])? <span><img key={k} src={data[k]} /></span> : data[k];
+
+        if (k === 'price') {
+           col = '€' + data[k]
+        } else {
+          col = /\.(jpg|jpeg|png)$/.test(data[k])? <span key={k}><img src={data[k]} /></span> : data[k];
+        }
       }
       columns.push(col);
     }
 
     let editClass = this.state.isEditing? 'edit' : '';
-    let removeButton = (<a onClick={this.remove} className="remove" href="#">Remove</a>);
-    let editButton = (<EditButton className={editClass} onClick={this.toggleEditor} />);
+    let removeButton = (<Button className="remove" onClick={this.remove}>Remove</Button>);
+    let editButton = (<Button className={editClass} onClick={this.toggleEditor}>Edit</Button>);
     return (
       <div className={this.state.className + ' ' + editClass}>
         {columns}
-        {this.state.isEditing? removeButton : null}
-        {editButton}
+        <span className="controls">{this.state.isEditing? removeButton : null}{editButton}</span>
       </div>
     );
   }

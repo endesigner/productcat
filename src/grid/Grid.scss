@@ -1,13 +1,94 @@
-.grid {
-  > .header {
-    padding: 5px;
+$color-black: #000;
+$color-light: #eceeef;
+$iconPlus: '\F004';
 
-    > span {
+$iconCircledMinus: '\F056';
+$iconCircledPlus: '\F042';
+
+@mixin linearGradient($top, $bottom){
+    background: $top; /* Old browsers */
+    background: -moz-linear-gradient(top,  $top 0%, $bottom 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$top), color-stop(100%,$bottom)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $top 0%,$bottom 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $top 0%,$bottom 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $top 0%,$bottom 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  $top 0%,$bottom 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+.grid {
+  background: #fff;
+  padding: 0 0 40px 0;
+
+  > .controls {
+    padding: 20px 40px;
+    border-bottom: 1px solid $color-light;
+
+    > div.name {
+      display: inline-block;
+      font-size: 130%;
+      font-weight: bold;
+      margin: 0 50px 0 0;
+    }
+
+    > div.filter {
       display: inline-block;
       width: 20%;
+
+      input {
+        padding: 5px;
+        height: 40px;
+        width: 100%;
+        font-size: 100%;
+        font-family: Zent;
+      }
+    }
+
+    > a.create {
+      font-weight: bold;
+      text-decoration: none;
+      float: right;
+      position: relative;
+      border: 1px solid #0072ac;
+      padding: 10px 20px 10px 50px;
+      color: #fff;
+      @include linearGradient(#1ba0e3, #0383c3);
+
+      border-radius: 2px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+      -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+
+      &:before {
+        position: absolute;
+        font-weight: normal;
+        top: 7px;
+        left: 20px;
+        font-family: Dingbatz;
+        display: inline-block;
+        font-size: 150%;
+        content: $iconCircledPlus;
+      }
     }
   }
 
-  background: #ccc;
+  > .content {
+    padding: 20px 40px;
 
+    > .header {
+      padding: 20px;
+      font-weight: bold;
+      color: rgba($color-black, 0.3);
+      text-transform: uppercase;
+
+      > span {
+        display: inline-block;
+        width: 25%;
+
+      }
+
+      > span.edit {
+        text-align: right;
+      }
+    }
+  }
 }
