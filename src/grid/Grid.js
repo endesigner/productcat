@@ -95,7 +95,7 @@ var Grid = React.createClass({
       }
 
       return (<Row
-        key={k}
+        key={row.id}
         className="row"
         isEditing={false}
         id={row.id}
