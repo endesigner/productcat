@@ -40,7 +40,7 @@ var Grid = React.createClass({
 
     let rows = this.state.rows.slice();
     data['id'] = this.nextRowId();
-    rows.push(data);
+    rows.unshift(data);
 
     this.setState({ rows: rows });
   },
