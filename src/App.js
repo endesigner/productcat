@@ -11,8 +11,8 @@ var App = React.createClass({
         {id: 1, image: 'assets/chocolate.png', name: 'Chocolate cupkake', price: '7,90'},
         {id: 2, image: 'assets/strawberry.png', name: 'Strawberry cupkake', price: '13,90'},
         {id: 3, image: 'assets/raspberry.png', name: 'Raspberry cupkake', price: '5.50'},
-        {id: 3, image: 'assets/healthy.png', name: 'Healthy cupkake', price: '5.50'},
-        {id: 4, image: 'assets/kitten.jpeg', name: 'Kittie', price: '3'},
+        {id: 4, image: 'assets/healthy.png', name: 'Healthy cupkake', price: '5.50'},
+        {id: 5, image: 'assets/kitten.jpeg', name: 'Kittie', price: '3'},
       ]
     };
   },
